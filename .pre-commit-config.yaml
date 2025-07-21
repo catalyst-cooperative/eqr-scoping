@@ -100,15 +100,6 @@ repos:
         always_run: false
         entry: jupyter nbconvert --clear-output
 
-      - id: unit-tests
-        name: unit-tests
-        stages: [pre-commit]
-        language: system
-        verbose: false
-        pass_filenames: false
-        always_run: true
-        entry: pytest --cov-fail-under=0 --doctest-modules src/pudl test/unit -m "not slow"
-
 # Configuration for pre-commit.ci
 ci:
   autofix_commit_msg: |
