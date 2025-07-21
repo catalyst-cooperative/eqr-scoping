@@ -1,0 +1,123 @@
+---
+repos:
+  # Quick content checks based on grepping for python specific patterns:
+  - repo: https://github.com/pre-commit/pygrep-hooks
+    rev: v1.10.0
+    hooks:
+      - id: rst-backticks # Find single rather than double backticks
+      - id: rst-directive-colons # Missing double-colons after directives
+      - id: rst-inline-touching-normal # Inline code should never touch normal text
+      - id: python-use-type-annotations # Use annotations not old-style type comments
+
+  # Other file formatting, plus common Git mistakes & text file standardization:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+      - id: check-added-large-files # Don't accidentally commit giant files.
+      - id: check-merge-conflict # Watch for lingering merge markers.
+      - id: check-yaml # Validate all YAML files.
+      - id: check-toml
+      - id: check-case-conflict # Avoid case sensitivity in file names.
+      - id: debug-statements # Watch for lingering debugger calls.
+      - id: mixed-line-ending # Use Unix line-endings to avoid big no-op CSV diffs.
+        args: ["--fix=lf"]
+      - id: trailing-whitespace
+      - id: name-tests-test # Follow PyTest naming convention.
+      - id: end-of-file-fixer
+
+  ####################################################################################
+  # Formatters: hooks that re-write code & documentation files
+  ####################################################################################
+
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.12.3
+    hooks:
+      - id: ruff-check
+        args: [--fix]
+      - id: ruff-format
+
+  - repo: https://github.com/rbubley/mirrors-prettier
+    rev: v3.6.2
+    hooks:
+      - id: prettier
+        types_or: [yaml]
+
+  - repo: https://github.com/koalaman/shellcheck-precommit
+    rev: v0.10.0
+    hooks:
+      - id: shellcheck
+
+  ####################################################################################
+  # Linters: hooks that check but don't alter files
+  ####################################################################################
+
+  # Spell check our documentation and code comments
+  - repo: https://github.com/adhtruong/mirrors-typos
+    rev: v1.34.0
+    hooks:
+      - id: typos
+        exclude: |
+          (?x)^(
+            .*\.yml
+            |.*\.toml
+            |.*\.bib
+            |.*\.csv
+            |.*\.html
+          )$ | migrations/ | devtools/ | test/ | notebooks/ | src/pudl/metadata/codes.py | src/pudl/transform/params/ferc1.py
+        args: [] # Make this read, not write
+
+  # Lint Dockerfiles for errors and to ensure best practices
+  - repo: https://github.com/AleksaC/hadolint-py
+    rev: v2.12.1b3
+    hooks:
+      - id: hadolint
+
+  # Check for errors in restructuredtext (.rst) files under the doc hierarchy
+  - repo: https://github.com/PyCQA/doc8
+    rev: v2.0.0
+    hooks:
+      - id: doc8
+        args: [--config, pyproject.toml]
+
+  # Check Github Actions
+  - repo: https://github.com/rhysd/actionlint
+    rev: v1.7.7
+    hooks:
+      - id: actionlint
+
+  #####################################################################################
+  # Our own pre-commit hooks, which don't come from the pre-commit project
+  #####################################################################################
+  - repo: local
+    hooks:
+      - id: nb-output-clear
+        name: nb-output-clear
+        stages: [pre-commit]
+        language: system
+        verbose: false
+        files: ".*\\.ipynb"
+        pass_filenames: true
+        always_run: false
+        entry: jupyter nbconvert --clear-output
+
+      - id: unit-tests
+        name: unit-tests
+        stages: [pre-commit]
+        language: system
+        verbose: false
+        pass_filenames: false
+        always_run: true
+        entry: pytest --cov-fail-under=0 --doctest-modules src/pudl test/unit -m "not slow"
+
+# Configuration for pre-commit.ci
+ci:
+  autofix_commit_msg: |
+    [pre-commit.ci] auto fixes from pre-commit.com hooks
+
+    For more information, see https://pre-commit.ci
+  autofix_prs: true
+  autoupdate_branch: main
+  autoupdate_commit_msg: "[pre-commit.ci] pre-commit autoupdate"
+  autoupdate_schedule: weekly
+  skip: [unit-tests, nb-output-clear, conda-lock, shellcheck]
+  submodules: false
