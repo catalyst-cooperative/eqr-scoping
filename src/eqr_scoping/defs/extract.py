@@ -38,13 +38,11 @@ def _clean_csv_name(csv_path: Path) -> str:
 
 def _csvs_to_parquet(csv_path: Path, output_path: UPath):
     for file in csv_path.iterdir():
-        if "indexPub" in file.stem:
-            continue
         # Detect which table type CSV is and prep output directory
         try:
             [table_type] = [
                 key
-                for key in ["contracts", "ident", "transactions"]
+                for key in ["contracts", "ident", "transactions", "indexPub"]
                 if file.stem.endswith(key)
             ]
         except ValueError:
