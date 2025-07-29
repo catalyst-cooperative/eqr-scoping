@@ -30,7 +30,7 @@ repos:
   ####################################################################################
 
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.12.3
+    rev: v0.12.5
     hooks:
       - id: ruff-check
         args: [--fix]
@@ -56,14 +56,6 @@ repos:
     rev: v1.34.0
     hooks:
       - id: typos
-        exclude: |
-          (?x)^(
-            .*\.yml
-            |.*\.toml
-            |.*\.bib
-            |.*\.csv
-            |.*\.html
-          )$ | migrations/ | devtools/ | test/ | notebooks/ | src/pudl/metadata/codes.py | src/pudl/transform/params/ferc1.py
         args: [] # Make this read, not write
 
   # Lint Dockerfiles for errors and to ensure best practices
@@ -85,20 +77,6 @@ repos:
     hooks:
       - id: actionlint
 
-  #####################################################################################
-  # Our own pre-commit hooks, which don't come from the pre-commit project
-  #####################################################################################
-  - repo: local
-    hooks:
-      - id: nb-output-clear
-        name: nb-output-clear
-        stages: [pre-commit]
-        language: system
-        verbose: false
-        files: ".*\\.ipynb"
-        pass_filenames: true
-        always_run: false
-        entry: jupyter nbconvert --clear-output
 
 # Configuration for pre-commit.ci
 ci:
@@ -110,5 +88,5 @@ ci:
   autoupdate_branch: main
   autoupdate_commit_msg: "[pre-commit.ci] pre-commit autoupdate"
   autoupdate_schedule: weekly
-  skip: [unit-tests, nb-output-clear, shellcheck]
+  skip: [shellcheck]
   submodules: false
