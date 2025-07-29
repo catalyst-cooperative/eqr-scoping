@@ -15,7 +15,8 @@ a funding source.
 
 ## Usage
 This repo uses `uv` for dependency management, and `dagster` to orchestrate the
-prototype ETL. In order to launch `dagster`, run:
+prototype ETL. Once you have [installed uv](https://docs.astral.sh/uv/getting-started/installation/),
+you can launch `dagster` with the following command:
 
 ```
 uv run dg dev
