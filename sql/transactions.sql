@@ -2,10 +2,12 @@
 -- However, the ENUMs for low-cardinality strings are not reducing the file size.
 -- Not sure if they're actually being dictionary encoded in the Parquet output.
 -- Ideally we would identify the universe of values dynamically rather than manually.
+
+-- To run the conversion, from the top level of the repo run:
+-- duckdb < sql/transactions.sql
+
 -- This has only been tested on the 2022 Q4 data.
--- It takes only a few seconds to run on 200M rows.
--- To run the conversion you can just do:
--- duckdb < transactions.sql
+-- It takes less than 1 minute to run on 200M rows.
 
 -- Create ENUM types for all categorical columns
 CREATE TYPE exchange_brokerage_service_enum AS ENUM (
@@ -21,6 +23,7 @@ CREATE TYPE type_of_rate_enum AS ENUM (
     'RTO/ISO'
 );
 
+-- These do not look like they'll be fun.
 CREATE TYPE time_zone_enum AS ENUM (
     'CD',
     'CP',
@@ -91,6 +94,8 @@ CREATE TYPE product_name_enum AS ENUM (
     'UPLIFT'
 );
 
+-- Do any of these need to be consolidated? e.g. are KW-DAY and $/KW-DAY the same?
+-- Would we want to convert to uniform units for easy comparison?
 CREATE TYPE rate_units_enum AS ENUM (
     'KVA',
     'KVR',
@@ -161,8 +166,9 @@ COPY (
             ELSE TRY_CAST(UPPER(rate_units) AS rate_units_enum)
         END AS rate_units,
 
-        -- More work is required to make these into clean ENUMs
+        -- There are 100+ BA codes in here, which we would probably want to link to EIA
         UPPER(point_of_delivery_balancing_authority)::VARCHAR as point_of_delivery_balancing_authority,
+        -- There are ~9000 of these. Low cardinality relative to 200M rows, but it's a
         UPPER(point_of_delivery_specific_location)::VARCHAR as point_of_delivery_specific_location,
 
         TRY_CAST(transaction_quantity AS FLOAT) AS transaction_quantity,
