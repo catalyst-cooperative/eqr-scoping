@@ -38,7 +38,7 @@ def _clean_csv_name(csv_path: Path) -> str:
     return new_path
 
 
-def _csvs_to_parquet(csv_path: Path, output_path: UPath):
+def _csvs_to_parquet(csv_path: Path, output_path: UPath, year_quarter: str):
     """Mirror CSVs in filing to a parquet file.
 
     Each filing contains a CSV for 4 EQR tables. These will each be extracted
@@ -57,7 +57,7 @@ def _csvs_to_parquet(csv_path: Path, output_path: UPath):
 
         # Use duckdb to read CSV and write as parquet
         duckdb.execute(
-            f"COPY (SELECT * FROM read_csv('{str(file)}', all_varchar=true, ignore_errors=true))"
+            f"COPY (SELECT *, '{year_quarter}' AS year_quarter FROM read_csv('{str(file)}', all_varchar=true, ignore_errors=true))"
             f"    TO '{_get_output_name(parquet_path, file)}';"
         )
 
@@ -69,7 +69,8 @@ def extract_eqr(
 ):
     """Extract year quarter from CSVs and load to parquet files."""
     # Get year/quarter from selected partition
-    year, quarter = context.partition_key.split("q")
+    year_quarter = context.partition_key
+    year, quarter = year_quarter.split("q")
     quarter_zip_path = extract_settings.base_path / f"ferceqr-{year}-Q{quarter}.zip"
 
     # Open top level zipfile
@@ -86,4 +87,6 @@ def extract_eqr(
                 logger.info(f"Extracting CSVs from {filing}.")
                 with tempfile.TemporaryDirectory() as tmp_dir:
                     filing_archive.extractall(path=tmp_dir)
-                    _csvs_to_parquet(Path(tmp_dir), extract_settings.output_path)
+                    _csvs_to_parquet(
+                        Path(tmp_dir), extract_settings.output_path, year_quarter
+                    )
