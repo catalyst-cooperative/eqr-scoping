@@ -29,3 +29,20 @@ by year-quarter, and a specific partition(s) can be run by following these steps
 2. Click on the `default` asset group
 3. Select the desired asset, then click `Materialize selected`
 4. Select desired partition, then click `Launch run`
+
+## Design
+### Extract
+Raw data is archived at `gs://archives.catalyst.coop/eqr/`. There is one zipfile
+per quarter, and within each top level zipfile there are nested zipfiles for each
+EQR filing. Within each of these filings there CSV files for the 4 tables, `contracts`,
+`ident`, `transactions`, and `indexPub`.
+
+The extract asset, `extract_eqr`, will load the raw zipfile for a single quarter,
+then loop through the nested filing zipfiles and extract one at a time. It creates a
+single parquet file per table per filing. In order to parse the CSVs, it will extract
+the nested zipfiles to a temporary directory where `duckdb` can copy the data from
+each CSV to a parquet file. Given that CSV has no concept of datatypes, and we have
+no way to be sure that fields are consistently formatted in such a way that we can
+easily infer datatypes, the extraction will keep all columns as strings. This means
+that the extraction is not attempting any modification of the underlying data, and
+is simply converting to a format that is easier to access in bulk.
