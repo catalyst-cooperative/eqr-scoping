@@ -39,10 +39,17 @@ EQR filing. Within each of these filings there CSV files for the 4 tables, `cont
 
 The extract asset, `extract_eqr`, will load the raw zipfile for a single quarter,
 then loop through the nested filing zipfiles and extract one at a time. It creates a
-single parquet file per table per filing. In order to parse the CSVs, it will extract
-the nested zipfiles to a temporary directory where `duckdb` can copy the data from
-each CSV to a parquet file. Given that CSV has no concept of datatypes, and we have
-no way to be sure that fields are consistently formatted in such a way that we can
-easily infer datatypes, the extraction will keep all columns as strings. This means
-that the extraction is not attempting any modification of the underlying data, and
-is simply converting to a format that is easier to access in bulk.
+single parquet file per table per filing. The output parquet files will be saved in
+a directory called `extracted_eqr` in the base directory by default. This can be
+configured by selecting `Open Launchpad` in the `dagster UI` before executing the
+asset and changing the directory specified in the `config` section. Within this
+directory, there will be a sub-directory for each of the 4 tables containing one
+parquet file per filing.
+
+In order to parse the CSVs, the asset will first extract them from each nested
+zipfile to a temporary directory where `duckdb` can copy the data from each CSV to a
+parquet file. Given that CSV has no concept of datatypes, and we have no way to be
+sure that fields are consistently formatted in such a way that we can easily infer
+datatypes, the extraction will keep all columns as strings. This means that the
+extraction is not attempting any modification of the underlying data, and is simply
+converting to a format that is easier to access in bulk.
