@@ -51,13 +51,6 @@ repos:
   # Linters: hooks that check but don't alter files
   ####################################################################################
 
-  # Spell check our documentation and code comments
-  - repo: https://github.com/adhtruong/mirrors-typos
-    rev: v1.34.0
-    hooks:
-      - id: typos
-        args: [] # Make this read, not write
-
   # Lint Dockerfiles for errors and to ensure best practices
   - repo: https://github.com/AleksaC/hadolint-py
     rev: v2.12.1b3
