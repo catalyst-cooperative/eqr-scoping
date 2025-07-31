@@ -1,0 +1,9 @@
+version: 2
+models:
+  - name: cleaned_transactions
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - year_quarter
+            - transaction_unique_id
+            - seller_company_name
