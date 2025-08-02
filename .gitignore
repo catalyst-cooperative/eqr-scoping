@@ -9,6 +9,7 @@ extracted_eqr/
 target/
 dbt_packages/
 eqr.duckdb
+logs/
 
 # Virtual environments
 .venv

@@ -7,3 +7,119 @@ models:
             - year_quarter
             - transaction_unique_id
             - seller_company_name
+    columns:
+      - name: year_quarter
+      - name: transaction_unique_id
+      - name: seller_company_name
+      - name: customer_company_name
+      - name: ferc_tariff_reference
+      - name: contract_service_agreement
+      - name: transaction_unique_identifier
+      - name: transaction_begin_date
+      - name: transaction_end_date
+      - name: trade_date
+      - name: exchange_brokerage_service
+        data_tests:
+          - dbt_expectations.expect_column_values_to_be_in_set:
+              value_set: ["BROKER", "ICE", "NODAL", "NYMEX"]
+              row_condition: "exchange_brokerage_service IS NOT NULL"
+      - name: type_of_rate
+        data_tests:
+          - dbt_expectations.expect_column_values_to_be_in_set:
+              value_set: ["ELECTRIC INDEX", "FIXED", "FORMULA", "RTO/ISO"]
+              row_condition: "type_of_rate IS NOT NULL"
+      - name: time_zone
+        data_tests:
+          - dbt_expectations.expect_column_values_to_be_in_set:
+              value_set:
+                [
+                  "CD",
+                  "CP",
+                  "CS",
+                  "ED",
+                  "EP",
+                  "EPT",
+                  "ES",
+                  "EST",
+                  "MD",
+                  "MP",
+                  "MS",
+                  "PD",
+                  "PP",
+                  "PS",
+                ]
+              row_condition: "time_zone IS NOT NULL"
+      - name: class_name
+        data_tests:
+          - dbt_expectations.expect_column_values_to_be_in_set:
+              value_set: ["BA", "F", "NF", "UP"]
+              row_condition: "class_name IS NOT NULL"
+      - name: term_name
+        data_tests:
+          - dbt_expectations.expect_column_values_to_be_in_set:
+              value_set: ["LT", "ST"]
+              row_condition: "term_name IS NOT NULL"
+      - name: increment_name
+        data_tests:
+          - dbt_expectations.expect_column_values_to_be_in_set:
+              value_set: ["15", "5", "D", "H", "M", "W", "Y"]
+              row_condition: "increment_name IS NOT NULL"
+      - name: increment_peaking_name
+        data_tests:
+          - dbt_expectations.expect_column_values_to_be_in_set:
+              value_set: ["FP", "OP", "P"]
+              row_condition: "increment_peaking_name IS NOT NULL"
+      - name: product_name
+        data_tests:
+          - dbt_expectations.expect_column_values_to_be_in_set:
+              value_set:
+                - "BLACK START SERVICE"
+                - "BOOKED OUT POWER"
+                - "CAPACITY"
+                - "CUSTOMER CHARGE"
+                - "ENERGY"
+                - "ENERGY IMBALANCE"
+                - "EXCHANGE"
+                - "FUEL CHARGE"
+                - "GENERATOR IMBALANCE"
+                - "GRANDFATHERED BUNDLED"
+                - "NEGOTIATED RATE TRANSMISSION"
+                - "OTHER"
+                - "PRIMARY FREQUENCY RESPONSE"
+                - "REACTIVE SUPPLY & VOLTAGE CONTROL"
+                - "REAL POWER TRANSMISSION LOSS"
+                - "REGULATION & FREQUENCY RESPONSE"
+                - "REQUIREMENTS SERVICE"
+                - "SCHEDULE SYSTEM CONTROL & DISPATCH"
+                - "SPINNING RESERVE"
+                - "SUPPLEMENTAL RESERVE"
+                - "TOLLING ENERGY"
+                - "UPLIFT"
+      - name: rate_units
+        data_tests:
+          - dbt_expectations.expect_column_values_to_be_in_set:
+              value_set:
+                - "$/KVA"
+                - "$/KVR"
+                - "$/KW"
+                - "$/KW-DAY"
+                - "$/KW-MO"
+                - "$/KW-YR"
+                - "$/KWH"
+                - "$/MVAR-YR"
+                - "$/MW"
+                - "$/MW-DAY"
+                - "$/MW-MO"
+                - "$/MW-YR"
+                - "$/MWH"
+                - "$/RKVA"
+                - "CENTS/KWH"
+                - "FLAT RATE"
+      - name: point_of_delivery_balancing_authority
+      - name: point_of_delivery_specific_location
+      - name: transaction_quantity
+      - name: price
+      - name: standardized_quantity
+      - name: standardized_price
+      - name: total_transmission_charge
+      - name: total_transaction_charge
