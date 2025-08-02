@@ -62,7 +62,7 @@ def _csvs_to_parquet(csv_path: Path, output_path: UPath, year_quarter: str):
         )
 
 
-@dg.asset(partitions_def=year_quarters)
+@dg.asset(partitions_def=year_quarters, deps=["custom_sql_types"])
 def extract_eqr(
     context: dg.AssetExecutionContext,
     extract_settings: ExtractSettings = ExtractSettings(),

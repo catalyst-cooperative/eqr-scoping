@@ -1,0 +1,8 @@
+eqr_dbt:
+  outputs:
+    dev:
+      type: duckdb
+      path: eqr.duckdb
+      threads: 4
+
+  target: dev

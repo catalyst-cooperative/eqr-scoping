@@ -53,3 +53,25 @@ sure that fields are consistently formatted in such a way that we can easily inf
 datatypes, the extraction will keep all columns as strings. This means that the
 extraction is not attempting any modification of the underlying data, and is simply
 converting to a format that is easier to access in bulk.
+
+### Transform
+We've set up a `dbt` project to provide a clean and streamlined way to use `duckdb` for
+transforms. This project uses the `dagster-dbt` integration, allowing `dbt` models to
+be run as assets, and to depend on the upstream, python based, extract asset. An example
+can be seen in `models/cleaned_transactions.sql`. Each `dbt` model is a SQL `SELECT`
+statement, which can be used with a `FROM` clause that looks like the following:
+
+```
+FROM {{ source('raw_eqr', '{raw_table_name}') }}
+```
+
+The `dbt source` macro will automatically read from the parquet files produced by the extract asset.
+
+By default, any `models` will be created as a `SQL view`. This means the transformed
+data will not be persisted on disk, but you can use `duckdb` to query them like any other table. This also means we can split transformation into multiple different
+`models` without using excessive disk space to store the outputs from each step
+
+Using `dbt` also allows us to easily add data validation tests for our transformed
+tables. This can be done by creating a `yaml` file in the `models` directory and
+defining [generic data tests](https://docs.getdbt.com/docs/build/data-tests#generic-data-tests).
+An example of this pattern can be seen in `models/cleaned_transactions.sql`.

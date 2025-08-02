@@ -1,0 +1,21 @@
+version: 2
+
+sources:
+  - name: raw_eqr
+    tables:
+      - name: transactions
+        meta:
+          dagster:
+            asset_key: ["extract_eqr"]
+      - name: contracts
+        meta:
+          dagster:
+            asset_key: ["extract_eqr"]
+      - name: ident
+        meta:
+          dagster:
+            asset_key: ["extract_eqr"]
+      - name: indexPub
+        meta:
+          dagster:
+            asset_key: ["extract_eqr"]
