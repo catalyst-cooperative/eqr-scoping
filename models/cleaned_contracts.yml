@@ -1,0 +1,156 @@
+version: 2
+models:
+  - name: cleaned_contracts
+    columns:
+      - name: year_quarter
+      - name: contract_unique_id
+      - name: seller_company_name
+      - name: customer_company_name
+      - name: ferc_tariff_reference
+      - name: contract_service_agreement_id
+      - name: contract_execution_date
+      - name: commencement_date_of_contract_term
+      - name: contract_termination_date
+      - name: actual_termination_date
+      - name: extension_provision_description
+      - name: class_name
+        tests:
+          - dbt_expectations.expect_column_values_to_be_in_set:
+              value_set: ["F", "NF", "UP"]
+              row_condition: "class_name IS NOT NULL"
+      - name: term_name
+        tests:
+          - dbt_expectations.expect_column_values_to_be_in_set:
+              value_set: ["ST", "LT"]
+              row_condition: "term_name IS NOT NULL"
+      - name: increment_name
+        tests:
+          - dbt_expectations.expect_column_values_to_be_in_set:
+              value_set: ["15", "5", "D", "H", "M", "W", "Y"]
+              row_condition: "increment_name IS NOT NULL"
+      - name: increment_peaking_name
+        tests:
+          - dbt_expectations.expect_column_values_to_be_in_set:
+              value_set: ["P", "FP", "OP"]
+              row_condition: "increment_peaking_name IS NOT NULL"
+      - name: product_type_name
+        tests:
+          - dbt_expectations.expect_column_values_to_be_in_set:
+              value_set:
+                [
+                  "CR-PP",
+                  "CB",
+                  "CR-ED",
+                  "CR-ES",
+                  "T",
+                  "CR-MP",
+                  "OTHER",
+                  "NPU",
+                  "MB",
+                  "CR",
+                  "CR-CP",
+                ]
+              row_condition: "product_type_name IS NOT NULL"
+      - name: product_name
+        tests:
+          - dbt_expectations.expect_column_values_to_be_in_set:
+              value_set:
+                [
+                  "BLACK START SERVICE",
+                  "CAPACITY",
+                  "CUSTOMER CHARGE",
+                  "DIRECT ASSIGNMENT FACILITIES CHARGE",
+                  "EMERGENCY ENERGY",
+                  "ENERGY",
+                  "ENERGY IMBALANCE",
+                  "EXCHANGE",
+                  "FUEL CHARGE",
+                  "GENERATOR IMBALANCE",
+                  "GRANDFATHERED BUNDLED",
+                  "INTERCONNECTION AGREEMENT",
+                  "MEMBERSHIP AGREEMENT",
+                  "MUST RUN AGREEMENT",
+                  "NEGOTIATED RATE TRANSMISSION",
+                  "NETWORK",
+                  "NETWORK OPERATING AGREEMENT",
+                  "OTHER",
+                  "POINT-TO-POINT AGREEMENT",
+                  "PRIMARY FREQUENCY RESPONSE",
+                  "REACTIVE SUPPLY & VOLTAGE CONTROL",
+                  "REAL POWER TRANSMISSION LOSS",
+                  "REASSIGNMENT AGREEMENT",
+                  "REGULATION & FREQUENCY RESPONSE",
+                  "REQUIREMENTS SERVICE",
+                  "SCHEDULE SYSTEM CONTROL & DISPATCH",
+                  "SPINNING RESERVE",
+                  "SUPPLEMENTAL RESERVE",
+                  "SYSTEM OPERATING AGREEMENTS",
+                  "TOLLING ENERGY",
+                  "TRANSMISSION OWNERS AGREEMENT",
+                  "UPLIFT",
+                ]
+              row_condition: "product_name IS NOT NULL"
+      - name: quantity
+      - name: units
+        tests:
+          - dbt_expectations.expect_column_values_to_be_in_set:
+              value_set:
+                [
+                  "FLAT RATE",
+                  "KV",
+                  "KVA",
+                  "KVR",
+                  "KW",
+                  "KW-DAY",
+                  "KW-MO",
+                  "KW-WK",
+                  "KW-YR",
+                  "KWH",
+                  "MVAR-YR",
+                  "MW",
+                  "MW-DAY",
+                  "MW-MO",
+                  "MW-WK",
+                  "MW-YR",
+                  "MWH",
+                  "RKVA",
+                ]
+              row_condition: "units IS NOT NULL"
+      - name: rate
+      - name: rate_minimum
+      - name: rate_maximum
+      - name: rate_description
+      - name: rate_units
+        tests:
+          - dbt_expectations.expect_column_values_to_be_in_set:
+              value_set:
+                [
+                  "$/KV",
+                  "$/KVA",
+                  "$/KVR",
+                  "$/KW",
+                  "$/KW-DAY",
+                  "$/KW-MO",
+                  "$/KW-WK",
+                  "$/KW-YR",
+                  "$/KWH",
+                  "$/MVAR-YR",
+                  "$/MW",
+                  "$/MW-DAY",
+                  "$/MW-MO",
+                  "$/MW-WK",
+                  "$/MW-YR",
+                  "$/MWH",
+                  "$/RKVA",
+                  "CENTS",
+                  "CENTS/KVR",
+                  "CENTS/KWH",
+                  "FLAT RATE",
+                ]
+              row_condition: "rate_units IS NOT NULL"
+      - name: point_of_receipt_balancing_authority
+      - name: point_of_receipt_specific_location
+      - name: point_of_delivery_balancing_authority
+      - name: point_of_delivery_specific_location
+      - name: begin_date
+      - name: end_date

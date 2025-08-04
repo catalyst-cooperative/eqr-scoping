@@ -1,7 +1,8 @@
 CREATE TYPE exchange_brokerage_service_enum AS ENUM (
     'BROKER',
     'ICE',
-    'NODAL'
+    'NODAL',
+    'NYMEX'
 );
 
 CREATE TYPE type_of_rate_enum AS ENUM (
@@ -85,19 +86,20 @@ CREATE TYPE product_name_enum AS ENUM (
 -- Do any of these need to be consolidated? e.g. are KW-DAY and $/KW-DAY the same?
 -- Would we want to convert to uniform units for easy comparison?
 CREATE TYPE rate_units_enum AS ENUM (
-    'KVA',
-    'KVR',
-    'KW',
-    'KW-DAY',
-    'KW-MO',
-    'KW-YR',
-    'KWH',
-    'MVAR-YR',
+    '$/KVA',
+    '$/KVR',
+    '$/KW',
+    '$/KW-DAY',
+    '$/KW-MO',
+    '$/KW-YR',
+    '$/KWH',
+    '$/MVAR-YR',
     '$/MW',
     '$/MW-DAY',
     '$/MW-MO',
     '$/MW-YR',
     '$/MWH',
     '$/RKVA',
+    'CENTS/KWH',
     'FLAT RATE'
 );
