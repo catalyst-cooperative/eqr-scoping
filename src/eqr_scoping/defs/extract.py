@@ -1,6 +1,7 @@
 import io
 import tempfile
 import zipfile
+from collections import Counter
 from pathlib import Path
 
 import duckdb
@@ -77,16 +78,31 @@ def extract_eqr(
     with zipfile.ZipFile(
         io.BytesIO(quarter_zip_path.open(mode="rb").read())
     ) as quarter_archive:
+        # Check for duplicate filenames
+        if len(
+            dupes := [
+                filing
+                for filing, count in Counter(quarter_archive.namelist()).items()
+                if count > 1
+            ]
+        ):
+            raise RuntimeError(f"Detected duplicate filings: {dupes}")
+
         # Loop through all nested zipfiles (one for each filing in the quarter)
         for filing in quarter_archive.namelist():
             # Extract CSVs from filing to a temporary directory so duckdb can be used
             # to parse CSVs and mirror to parquet
-            with zipfile.ZipFile(
-                io.BytesIO(quarter_archive.read(filing))
-            ) as filing_archive:
-                logger.info(f"Extracting CSVs from {filing}.")
-                with tempfile.TemporaryDirectory() as tmp_dir:
-                    filing_archive.extractall(path=tmp_dir)
-                    _csvs_to_parquet(
-                        Path(tmp_dir), extract_settings.output_path, year_quarter
-                    )
+            try:
+                with zipfile.ZipFile(
+                    io.BytesIO(quarter_archive.read(filing))
+                ) as filing_archive:
+                    logger.info(f"Extracting CSVs from {filing}.")
+                    with tempfile.TemporaryDirectory() as tmp_dir:
+                        filing_archive.extractall(path=tmp_dir)
+                        _csvs_to_parquet(
+                            Path(tmp_dir),
+                            extract_settings.output_path,
+                            year_quarter,
+                        )
+            except zipfile.BadZipfile:
+                logger.warning(f"Could not open filing: {filing}.")
