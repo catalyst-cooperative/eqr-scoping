@@ -6,16 +6,16 @@ sources:
       - name: transactions
         meta:
           dagster:
-            asset_key: ["extract_eqr"]
+            asset_key: ["extract_transactions"]
       - name: contracts
         meta:
           dagster:
-            asset_key: ["extract_eqr"]
+            asset_key: ["extract_contracts"]
       - name: ident
         meta:
           dagster:
-            asset_key: ["extract_eqr"]
+            asset_key: ["extract_ident"]
       - name: indexPub
         meta:
           dagster:
-            asset_key: ["extract_eqr"]
+            asset_key: ["extract_indexPub"]
