@@ -4,7 +4,7 @@
 COPY (
     SELECT
         year_quarter::VARCHAR AS year_quarter,
-        copany_identifier::VARCHAR AS company_identifier,
+        company_identifier::VARCHAR AS company_identifier,
         contract_unique_id::VARCHAR AS contract_unique_id,
         seller_company_name::VARCHAR AS seller_company_name,
         customer_company_name::VARCHAR AS customer_company_name,
