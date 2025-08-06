@@ -71,7 +71,7 @@ COPY (
         TRY_STRPTIME(begin_date, '%Y%m%d%H%M') AS begin_date,
         TRY_STRPTIME(end_date, '%Y%m%d%H%M') AS end_date
     FROM 'extracted_eqr/contracts/*/*.parquet'
-) TO 'parquet/contracts.parquet' (
+) TO 'parquet/contracts' (
     FORMAT PARQUET,
     COMPRESSION SNAPPY,
     ROW_GROUP_SIZE 100_000,

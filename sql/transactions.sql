@@ -3,8 +3,7 @@
 -- This has only been tested on: [2013q3, 2016q2, 2018q1, 2020q1, 2022q4]
 -- on a 10 core Apple M1 it takes <90 seconds to run over 371M rows.
 COPY (
-    SELECT year_quarter::VARCHAR AS year_quarter,
-        company_identifier::VARCHAR AS company_identifier,
+    SELECT year_quarter::VARCHAR as year_quarter,
         transaction_unique_id::VARCHAR AS transaction_unique_id,
         seller_company_name::VARCHAR AS seller_company_name,
         customer_company_name::VARCHAR AS customer_company_name,
@@ -63,11 +62,8 @@ COPY (
         TRY_CAST(total_transmission_charge AS DECIMAL(12, 2)) AS total_transmission_charge,
         TRY_CAST(total_transaction_charge AS DECIMAL(12, 2)) AS total_transaction_charge
     FROM 'extracted_eqr/transactions/*/*.parquet'
-) TO 'parquet/transactions.parquet' (
+) TO 'parquet/transactions' (
     FORMAT PARQUET,
     COMPRESSION SNAPPY,
-    ROW_GROUP_SIZE 100_000,
-    PARTITION_BY year_quarter,
-    WRITE_PARTITION_COLUMNS,
-    OVERWRITE_OR_IGNORE
+    ROW_GROUP_SIZE 100_000
 );

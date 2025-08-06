@@ -20,7 +20,7 @@ COPY (
         filing_quarter::VARCHAR AS filing_quarter,
         year_quarter::VARCHAR AS year_quarter
     FROM 'extracted_eqr/ident/*/*.parquet'
-) TO 'parquet/ident.parquet' (
+) TO 'parquet/ident' (
     FORMAT PARQUET,
     COMPRESSION SNAPPY,
     ROW_GROUP_SIZE 100_000,
