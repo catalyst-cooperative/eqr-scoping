@@ -22,7 +22,7 @@ This repo uses `uv` for dependency management, and `dagster` to orchestrate the
 prototype ETL. Once you have [installed uv](https://docs.astral.sh/uv/getting-started/installation/),
 you can launch `dagster` with the following command:
 
-```
+```bash
 uv run dg dev
 ```
 
@@ -61,7 +61,7 @@ directory by default. This can be configured by selecting `Open Launchpad` in th
 tables, and in each of those table-level dirctories there is a sub-directory for each
 quarter of data named by year_quarter, containing one parquet file per filing:
 
-```text
+```pre
 extracted_eqr
 ├── contracts
 │   ├── 2013q3
@@ -111,13 +111,13 @@ For each of the EQR tables, there is a corresponding SQL script in the `sql/` di
 These scripts can be run individually with the `duckdb` command line tool, e.g.:
 
 ```bash
-duckdb < sql/ident.sql
+uv run duckdb < sql/ident.sql
 ```
 
 Or they can all be run at once with the `transform_all.sh` script:
 
 ```bash
-./transform_all.sh
+uv run ./transform_all.sh
 ```
 
 The results are written to per-table, per-quarter parquet files in the `parquet/`
