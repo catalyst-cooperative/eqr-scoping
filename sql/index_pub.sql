@@ -1,5 +1,7 @@
 COPY (
-    SELECT filer_unique_id::VARCHAR AS filer_unique_id,
+    SELECT
+        filer_unique_id::VARCHAR AS filer_unique_id,
+        company_identifier::VARCHAR AS company_identifier,
         Seller_Company_Name::VARCHAR AS seller_company_name,
         CASE
             WHEN UPPER(
@@ -10,7 +12,6 @@ COPY (
             )::VARCHAR
         END AS index_price_publisher_name,
         Transactions_Reported::VARCHAR AS transactions_reported,
-        company_identifier::VARCHAR AS company_identifier,
         year_quarter::VARCHAR AS year_quarter
     FROM 'extracted_eqr/indexPub/*/*.parquet'
 ) TO 'parquet/index_pub' (

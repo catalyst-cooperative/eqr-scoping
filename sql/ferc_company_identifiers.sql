@@ -17,7 +17,7 @@ COPY (
         HEADER=TRUE,
         NORMALIZE_NAMES=TRUE
     )
-) TO 'parquet/ferc_cid.parquet' (
+) TO 'parquet/ferc_company_identifiers.parquet' (
     FORMAT PARQUET,
     COMPRESSION SNAPPY
 )

@@ -3,7 +3,9 @@
 -- This has only been tested on: [2013q3, 2016q2, 2018q1, 2020q1, 2022q4]
 -- on a 10 core Apple M1 it takes <90 seconds to run over 371M rows.
 COPY (
-    SELECT year_quarter::VARCHAR as year_quarter,
+    SELECT
+        year_quarter::VARCHAR as year_quarter,
+        company_identifier::VARCHAR AS company_identifier,
         transaction_unique_id::VARCHAR AS transaction_unique_id,
         seller_company_name::VARCHAR AS seller_company_name,
         customer_company_name::VARCHAR AS customer_company_name,

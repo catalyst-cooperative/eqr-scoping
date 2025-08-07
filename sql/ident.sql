@@ -1,8 +1,8 @@
 COPY (
-    SELECT filer_unique_id::VARCHAR AS filer_unique_id,
+    SELECT
+        filer_unique_id::VARCHAR AS filer_unique_id,
         company_identifier::VARCHAR AS company_identifier,
         company_name::VARCHAR AS company_name,
-        company_identifier::VARCHAR AS company_identifier,
         contact_name::VARCHAR AS contact_name,
         contact_title::VARCHAR AS contact_title,
         contact_address::VARCHAR AS contact_address,
