@@ -6,6 +6,13 @@ dist/
 wheels/
 *.egg-info
 extracted_eqr/
+target/
+dbt_packages/
+eqr.duckdb
+ferceqr.duckdb
+logs/
+parquet/
+raw_ferceqr/
 
 # Virtual environments
 .venv
