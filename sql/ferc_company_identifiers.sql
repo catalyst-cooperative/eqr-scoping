@@ -1,8 +1,7 @@
 COPY (
     SELECT
-        organization_name,
+        organization_name::VARCHAR AS organization_name,
         cid::VARCHAR AS company_identifier,
-        column1::VARCHAR AS address_full,
         _program::VARCHAR AS ferc_program,
         region::VARCHAR AS region,
         company_website::VARCHAR AS company_website,
@@ -13,7 +12,7 @@ COPY (
         state::VARCHAR AS state_or_province,
         zip::VARCHAR AS postal_code
     FROM READ_CSV(
-        'docs/ferc-cid-listing-2025-06-10.csv',
+        'docs/ferc-cid-listing-2025-08-01.csv',
         HEADER=TRUE,
         NORMALIZE_NAMES=TRUE
     )
