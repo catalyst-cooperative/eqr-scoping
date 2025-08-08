@@ -70,7 +70,7 @@ COPY (
         point_of_delivery_specific_location::VARCHAR AS point_of_delivery_specific_location,
         TRY_STRPTIME(begin_date, '%Y%m%d%H%M') AS begin_date,
         TRY_STRPTIME(end_date, '%Y%m%d%H%M') AS end_date
-    FROM 'extracted_eqr/contracts/*/*.parquet'
+    FROM 'extracted/contracts/*/*.parquet'
 ) TO 'parquet/contracts' (
     FORMAT PARQUET,
     COMPRESSION SNAPPY,

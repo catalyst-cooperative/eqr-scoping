@@ -19,7 +19,7 @@ COPY (
         END AS transactions_reported_to_index_price_publishers,
         filing_quarter::VARCHAR AS filing_quarter,
         year_quarter::VARCHAR AS year_quarter
-    FROM 'extracted_eqr/ident/*/*.parquet'
+    FROM 'extracted/ident/*/*.parquet'
 ) TO 'parquet/ident' (
     FORMAT PARQUET,
     COMPRESSION SNAPPY,

@@ -16,8 +16,8 @@ logger = dg.get_dagster_logger(f"catalystcoop.{__name__}")
 class ExtractSettings(dg.ConfigurableResource):
     """Dagster resource which defines which EQR data to extract and configuration for raw archive."""
 
-    archive: str = "gs://archives.catalyst.coop/eqr/"
-    output: str = "./extracted_eqr"
+    archive: str = "gs://archives.catalyst.coop/ferceqr/"
+    output: str = "./extracted"
 
     @property
     def base_path(self) -> UPath:
@@ -178,8 +178,7 @@ def extract_eqr(
     """Extract year quarter from CSVs and load to parquet files."""
     # Get year/quarter from selected partition
     year_quarter = context.partition_key
-    year, quarter = year_quarter.split("q")
-    quarter_zip_path = extract_settings.base_path / f"ferceqr-{year}-Q{quarter}.zip"
+    quarter_zip_path = extract_settings.base_path / f"ferceqr-{year_quarter}.zip"
 
     # Prepare output paths for parquet files
     _create_output_paths(extract_settings.output_path)
