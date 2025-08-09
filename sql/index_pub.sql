@@ -13,7 +13,7 @@ COPY (
         END AS index_price_publisher_name,
         Transactions_Reported::VARCHAR AS transactions_reported,
         year_quarter::VARCHAR AS year_quarter
-    FROM 'extracted_eqr/indexPub/*/*.parquet'
+    FROM 'extracted/indexPub/*/*.parquet'
 ) TO 'parquet/index_pub' (
     FORMAT PARQUET,
     COMPRESSION SNAPPY,

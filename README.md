@@ -54,7 +54,7 @@ this may be very slow, and every time you run the asset it will re-download the 
 for the quarter again. To conserve local disk, the raw zipfiles are not saved. The whole
 raw dataset is roughly 85GB.
 
-The output parquet files will be saved in a directory called `extracted_eqr` in the base
+The output parquet files will be saved in a directory called `extracted` in the base
 directory by default. This can be configured by selecting `Open Launchpad` in the
 `dagster UI` before executing the asset and changing the directory specified in the
 `config` section. Within this directory, there will be a sub-directory for each of the 4
@@ -62,7 +62,7 @@ tables, and in each of those table-level dirctories there is a sub-directory for
 quarter of data named by year_quarter, containing one parquet file per filing:
 
 ```pre
-extracted_eqr
+extracted
 ├── contracts
 │   ├── 2013q3
 │   │   ├── 201309_3C_Solar_LLC_ident.parquet
@@ -84,21 +84,21 @@ that is easier to access in bulk.
 
 In a small number of cases, `duckdb` will fail to parse a CSV file, producing errors.
 In that case the file will be skipped and a warning will be logged. The logging output
-is written to a per-quarter parquet under `extracted_eqr/extraction_metadata/`.
+is written to a per-quarter parquet under `extracted/extraction_metadata/`.
 
 The extracted parquet files are pretty big. Almost everything is in the `transactions`
 table.
 
 ```bash
-du -sh extracted_eqr/*
+du -sh extracted/*
 ```
 
 ```pre
-509M     extracted_eqr/contracts/
-376M     extracted_eqr/extraction_metadata/
-241M     extracted_eqr/ident/
-237M     extracted_eqr/indexPub/
-46G      extracted_eqr/transactions/
+509M     extracted/contracts/
+376M     extracted/extraction_metadata/
+241M     extracted/ident/
+237M     extracted/indexPub/
+46G      extracted/transactions/
 ```
 
 ### Transform

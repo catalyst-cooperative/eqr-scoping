@@ -63,7 +63,7 @@ COPY (
         TRY_CAST(standardized_price AS DECIMAL(12, 2)) AS standardized_price,
         TRY_CAST(total_transmission_charge AS DECIMAL(12, 2)) AS total_transmission_charge,
         TRY_CAST(total_transaction_charge AS DECIMAL(12, 2)) AS total_transaction_charge
-    FROM 'extracted_eqr/transactions/*/*.parquet'
+    FROM 'extracted/transactions/*/*.parquet'
 ) TO 'parquet/transactions' (
     FORMAT PARQUET,
     COMPRESSION SNAPPY,
