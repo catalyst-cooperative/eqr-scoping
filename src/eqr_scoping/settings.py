@@ -1,6 +1,5 @@
 import dagster as dg
 
-
 year_quarters: dg.StaticPartitionsDefinition = dg.StaticPartitionsDefinition(
     [
         f"{year}q{quarter}"
