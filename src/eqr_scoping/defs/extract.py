@@ -157,7 +157,7 @@ def _save_extract_metadata(
         "    FROM reject_errors"
         "    JOIN reject_scans"
         "    ON reject_errors.scan_id=reject_scans.scan_id AND reject_errors.file_id=reject_scans.file_id"
-        f") TO '{str(output_file)}';"
+        f") TO '{output_file!s}';"
     )
 
 
